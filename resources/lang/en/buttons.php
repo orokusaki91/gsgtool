@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'create' => 'Create',
+    'archive' => 'Archive',
+    'documents' => 'Documents',
+    'vacation' => 'Vacation',
+    'save_as_pdf' => 'Save as PDF',
+	'save' => 'Save',
+	'edit_profile' => 'Edit profile',
+	'logout' => 'Logout',
+	'receipt' => 'Receipt',
+	'create_plan' => 'Create plan',
+	'create_news' => 'Create news',
+	'create_media' => 'Create media',
+	'login' => 'Login',
+	'create_staff_document' => 'Create staff document',
+	'create_vacation' => 'Create vacation',
+	'requested_vacation' => 'Requested vacation',
+	'rejected_vacation' => 'Rejected vacation',
+	'create_receipt' => 'Create receipt',
+	'create_receipt' => 'Create receipt',
+	'create_receipt' => 'Create receipt',
+	'close' => 'Close',
+	'cancel' => 'Cancel',
+	'delete' => 'Delete',
+	'un_archive' => 'Un archive',
+	'reject' => 'Reject',
+	'approve' => 'Approve'
+];

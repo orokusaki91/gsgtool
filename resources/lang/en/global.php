@@ -1,0 +1,53 @@
+<?php
+
+return [
+    'data_table_lang' => 'English',
+    'months' => [
+        '1' => 'January',
+        '2' => 'February',
+        '3' => 'March',
+        '4' => 'April',
+        '5' => 'May',
+        '6' => 'June',
+        '7' => 'July',
+        '8' => 'August',
+        '9' => 'September',
+        '10' => 'October',
+        '11' => 'November',
+        '12' => 'December'
+    ],
+    'days' => [
+        '1' => 'Mon',
+        '2' => 'Tue',
+        '3' => 'Wed',
+        '4' => 'Thu',
+        '5' => 'Fri',
+        '6' => 'Sat',
+        '7' => 'Sun'
+    ],
+	'menu' => [
+		'home' => 'Home',
+		'staff' => 'Staff',
+		'client' => 'Client',
+		'plan' => 'Plan',
+		'news' => 'News',
+		'media' => 'Media',
+		'report' => 'Report',
+		'vacation' => 'Vacation',
+		'theft' => 'Theft',
+	],
+    'imprint' => 'Imprint',
+	'documents' => 'Documents',
+	'edit' => 'Edit',
+	'delete' => 'Delete',
+	'archive' => 'Archive',
+	'receipts' => 'Receipts',
+	'files' => 'Files',
+	'gsg_tool' => 'GSG tool',
+	'un_archive' => 'Un archive',
+	'choose' => 'Choose',
+	'approve' => 'Approve',
+	'reject' => 'Reject',
+	"message" => 'Message',
+	"signature" => 'Signature',
+];
