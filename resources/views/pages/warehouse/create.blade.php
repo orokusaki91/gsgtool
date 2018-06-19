@@ -10,6 +10,7 @@
             {{ csrf_field() }}
             <fieldset>
                 {!! getTextFormGroup('text', 'name', $errors, 1, $warehouse) !!}
+                {!! getCheckboxFormGroup('checkbox', 'sizes', $errors, 0, $warehouse) !!}
                 <button type="submit" class="submit-btn btn btn-primary">{{ __('buttons.save') }}</button>
             </fieldset>
         </form>

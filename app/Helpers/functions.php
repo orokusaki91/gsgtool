@@ -8,7 +8,7 @@ function getArray($field){
     return $arr;
 }
 
-function getTextFormGroup($file, $field, $errors, $required, $model){
+function getTextFormGroup($file, $field, $errors, $required, $model, $extension = null){
     $value = '';
     if ($field != 'password' && $field != 're_password') {
         if($model) {
@@ -19,6 +19,7 @@ function getTextFormGroup($file, $field, $errors, $required, $model){
         }
     }
     $required = $required ? ' <font color="red">*</font>' : '';
+    $extension = $extension ? $extension : '';
     $type = $field == 'password' || $field == 're_password' ? 'password' : 'text';
     ob_start();
     require base_path(). '/resources/views/layouts/forms/'. $file. '.php';

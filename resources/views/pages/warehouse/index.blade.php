@@ -33,7 +33,7 @@
             @foreach($warehouses as $warehouse)
                 <tr class="tableCenter">
                     <td>{{ $warehouse->name }}</td>
-                    <td>{{ $warehouse->wh_qty }}</td>
+                    <td>{{ $warehouse->wh_stock }}</td>
                     <td><a href="{{ route('warehouse_input', ['warehouse' => $warehouse->id]) }}"><i class="fas fa-sign-in-alt"></i></a></td>
                     <td><a href="{{ route('warehouse_output', ['warehouse' => $warehouse->id]) }}"><i class="fas fa-sign-out-alt"></i></a></td>
                     <td><a href="{{ route('warehouse_edit', ['warehouse' => $warehouse->id]) }}"><i class="fas fa-edit"></i></a></td>

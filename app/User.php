@@ -116,6 +116,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\User', 'main_company_id');
     }
 
+    public function transactions(){
+        return $this->hasMany(Warehouse::class);
+    }
+
     public function mainCompany(){
         if($this->main_company_id == 'main'){
             return 'Main';

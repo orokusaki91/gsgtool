@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Warehouse extends Model
 {
     protected $fillable = [
-        'name'
+        'name',
+        'has_sizes',
     ];
 
     public function transactions()

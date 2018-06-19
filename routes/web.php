@@ -105,7 +105,8 @@ Route::get('/report/delete/{theft_id}', 'TheftController@delete')->name('theft_d
 // Warehouse Controller
 
 Route::get('/warehouse', 'WarehouseController@index')->name('warehouse');
-Route::get('/warehouse/returns', 'WarehouseController@transactions')->name('warehouse_returns');
+Route::get('/warehouse/returns', 'WarehouseController@returns')->name('warehouse_returns');
+Route::post('/warehouse/returns/store', 'WarehouseController@storeReturns')->name('warehouse_returns_store');
 Route::get('/warehouse/transactions', 'WarehouseController@transactions')->name('warehouse_transactions');
 Route::get('/warehouse/staff', 'WarehouseController@staff')->name('warehouse_staff');
 Route::get('/warehouse/material', 'WarehouseController@material')->name('warehouse_material');
@@ -117,6 +118,14 @@ Route::get('/warehouse/input/{warehouse}', 'WarehouseController@getInput')->name
 Route::post('/warehouse/input/{warehouse}/update', 'WarehouseController@postInput')->name('warehouse_input_update');
 Route::get('/warehouse/output/{warehouse}', 'WarehouseController@getOutput')->name('warehouse_output');
 Route::post('/warehouse/output/{warehouse}/update', 'WarehouseController@postOutput')->name('warehouse_output_update');
+
+// output
+Route::get('warehouse/ajax/sum_quantities', 'WarehouseController@sumQuantities')->name('warehouse_ajax_sum_qty');
+
+// returns
+Route::get('warehouse/ajax/get_products', 'WarehouseController@getProductsByStaff')->name('warehouse_ajax_get_products');
+Route::get('warehouse/ajax/get_sizes', 'WarehouseController@getSizesByProduct')->name('warehouse_ajax_get_sizes');
+Route::get('warehouse/ajax/get_qty', 'WarehouseController@getQtyBySize')->name('warehouse_ajax_get_qty');
 
 Route::get('/warehouse/edit/{warehouse}', 'WarehouseController@edit')->name('warehouse_edit');
 Route::post('/warehouse/update/{warehouse}', 'WarehouseController@update')->name('warehouse_update');

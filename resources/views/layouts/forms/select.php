@@ -3,11 +3,10 @@
     <label class="col-md-4 control-label text-left" for="<?=$field?>"><?=__('validation.attributes.'. $field). $requiredIcon?></label>
     <div class="col-md-6">
         <select id="<?=$field?>" name="<?=$field. $multiple?>" class="form-control" <?=$multipleAttr?>>
+                <option value="0"><?=trans('global.choose')?></option>
+
             <?php
             if(!$required && !$multiple){
-                ?>
-                <option value="0"><?=trans('global.choose')?></option>
-                <?php
             }
             foreach($datas as $k => $data){
                 if(gettype($select) == 'string' || gettype($select) == 'integer') {
