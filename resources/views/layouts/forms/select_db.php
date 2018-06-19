@@ -12,7 +12,7 @@
             foreach($datas as $data){
                 if(gettype($select) == 'string' || gettype($select) == 'integer') {
                     $selected = $data->id == $select ? ' selected' : '';
-                }elseif(gettype($select) == 'array'){
+                }elseif(gettype($select) == 'array'){                    
                     $selected = in_array($data->id, $select) ? ' selected' : '';
                 }
                 ?>

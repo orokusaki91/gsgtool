@@ -225,18 +225,15 @@ class StaffController extends Controller
 
     public function showPdf($user_id){
         $user = User::findOrFail($user_id);
-        $countries = Countries::lookup();
-        $maritalStatus = getArray('marital_status');
-        $workPermit = getArray('work_permit');
-        $accType = getArray('acc_type');
-        $currentJob = getArray('current_job');
+        $country = Countries::lookup();
         $spokenLanguage = getArray('spoken_language');
         $defaultSelect = getArray('default_select');
-        $trousersSize = getArray('trousers_size');
-        $TShirtSize = getArray('t_shirt_size');
-        $canton = getArray('canton');
-        $html = view('pages.staff.show_pdf', compact('user', 'countries', 'maritalStatus', 'workPermit', 'accType', 'currentJob', 'spokenLanguage', 'defaultSelect', 'trousersSize', 'TShirtSize', 'canton'))->render();
-        return $this->pdf->load($html)->filename($user->firstname. ' '. $user->lastname)->show();
+        $html = view('pages.staff.show_pdf', compact('user', 'country', 'spokenLanguage', 'defaultSelect'))->render();
+        
+        $options = $this->pdf->getOptions();
+        $options->setIsRemoteEnabled(true);
+
+        return $this->pdf->setOptions($options)->load($html)->filename($user->firstname. ' '. $user->lastname)->show();
     }
 
     public function edit($user_id){

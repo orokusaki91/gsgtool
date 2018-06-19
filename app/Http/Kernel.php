@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'menage_report' => \App\Http\Middleware\MenageReport::class,
         'check_if_can_view_theft' => \App\Http\Middleware\CheckIfCanViewTheft::class,
         'menage_theft' => \App\Http\Middleware\MenageTheft::class,
+        'roles' => \App\Http\Middleware\CheckRole::class,
     ];
 }

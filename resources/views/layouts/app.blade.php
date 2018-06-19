@@ -44,30 +44,31 @@
 				</div>
 				<div class="collapse navbar-collapse" id="myNavbar">
 					<ul class="nav navbar-nav collapse-nav">
-                        <li><a href="{{ route('home') }}">{{ __('global.menu.home') }}</a></li>
-                        @if(Auth()->user()->isAdmin())
-                            <li><a href="{{ route('event') }}">{{ __('global.menu.event') }}</a></li>
-                            <li><a href="{{ route('staff') }}">{{ __('global.menu.staff') }}</a></li>
+                    	<li><a href="{{ route('home') }}">{{ __('global.menu.home') }}</a></li>
+                        <li><a href="{{ route('event') }}">{{ __('global.menu.event') }}</a></li>
+                        @if(Auth::user()->hasAnyRole(['Main Organizer', 'Admin']))
+                        	<li><a href="{{ route('staff') }}">{{ __('global.menu.staff') }}</a></li>
+                        @endif
+                        @if(Auth::user()->isAdmin())
                             <li><a href="{{ route('client') }}">{{ __('global.menu.client') }}</a></li>
                         @endif
-                        @if(Auth()->user()->isMainOrganizer())
+                        @if(Auth::user()->isMainOrganizer())
                             <li><a href="{{ route('staff_vacation_personal') }}">{{ __('global.menu.vacation') }}</a></li>
                         @endif
-                        @if(Auth()->user()->isClient())
+                        @if(Auth::user()->isClient())
 							<li><a href="{{ route('document_list', ['document_type' => 'receipt']) }}">{{ __('global.menu.receipt') }}</a></li>
                         @endif
-						@if(Auth()->user()->isAdmin())
+                        @if(Auth::user()->isAdmin())
 							<li><a href="{{ route('warehouse') }}">{{ __('global.menu.warehouse') }}</a></li>
-						@endif
-						@if(Auth()->user()->isAdmin() || Auth()->user()->isDetective() || Auth()->user()->isMainOrganizer())
+                        @endif
+						<li><a href="{{ route('working_time') }}">{{ __('global.menu.working_time') }}</a></li>
+						@if(Auth::user()->hasAnyRole(['Detective', 'Main Organizer', 'Admin']))
 							<li><a href="{{ route('theft') }}">{{ __('global.menu.theft') }}</a></li>
 						@endif
                         <li><a href="{{ route('document_list', ['document_type' => 'plan']) }}">{{ __('global.menu.plan') }}</a></li>
                         <li><a href="{{ route('document_list', ['document_type' => 'news']) }}">{{ __('global.menu.news') }}</a></li>
                         <li><a href="{{ route('document_list', ['document_type' => 'media']) }}">{{ __('global.menu.media') }}</a></li>
-						@if(Auth()->user()->isAdmin() || Auth()->user()->isGuard() || Auth()->user()->isDetective() || Auth()->user()->isMainOrganizer())
-							<li><a href="{{ route('report') }}">{{ __('global.menu.report') }}</a></li>
-						@endif
+						<li><a href="{{ route('report') }}">{{ __('global.menu.report') }}</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
@@ -85,7 +86,7 @@
 													<img class="img-thumbnail" src="{{ asset('images/smallLogo.png') }}" style="height:70px" />
 												</p>
 											</div>
-											@if(!Auth()->user()->isClient())
+											@if(!Auth::user()->isClient())
 											<div class="col-xs-8">
 												<p class="text-left"><strong>{{ Auth::user()->firstname. " ". Auth::user()->lastname }}</strong></p>
 												<p class="text-left">
@@ -170,11 +171,21 @@
         $(document).ready( function () {
             $('#myTable').DataTable({
                 "scrollX": true,
+                "bInfo" : false,
                 "language": {
                     "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/"+'{{ __('global.data_table_lang') }}'+".json"
                 }
             });
-        } );
+            $('#newsTable, #eventsTable').DataTable({
+                "scrollX": true,
+    			"bPaginate": false,
+    			"searching": false,
+    			"bInfo" : false,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/"+'{{ __('global.data_table_lang') }}'+".json"
+                }
+            });;
+        } )
     </script>
 	
 	<script>

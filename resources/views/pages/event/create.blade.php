@@ -15,7 +15,7 @@
                 <div class="row">
                     @foreach($user_roles as $user_role)
                         <div class="col-md-6">
-                            {!! getCheckboxFormGroup('checkbox', $user_role->role_name, $errors, $event) !!}
+                            {!! getCheckboxFormGroup('checkbox', $user_role->label, $errors, $event) !!}
                         </div>
                     @endforeach
                 </div>

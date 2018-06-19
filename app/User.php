@@ -32,6 +32,15 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Role', 'user_role');
     }
 
+    public function working_times()
+    {
+        return $this->hasMany('App\WorkingTime');
+    }
+
+    public function events(){
+        return $this->belongsToMany('App\Event', 'user_event', 'event_id', 'user_id')->withPivot('status');
+    }
+
     public function role()
     {
         $roles = $this->roles;
@@ -117,5 +126,53 @@ class User extends Authenticatable
 
     public function staffType(){
         return $this->belongsTo('App\Role', 'staff_type');
+    }
+
+    public function scopeStaff($query)
+    {
+        return $query->whereHas('roles', function ($q) {
+            $q->whereNotIn('roles.id', [6, 7]);
+        });
+    }
+
+    public function scopeSecurity($query)
+    {
+        return $query->whereHas('roles', function ($q) {
+            $q->whereNotIn('roles.id', [1, 6, 7]);
+        });
+    }
+
+    public function scopeClients($query)
+    {
+        return $query->whereHas('roles', function ($q) {
+            $q->where('roles.id', 6);
+        });
+    }
+
+    public function scopeWithId($query, $user)
+    {
+        return $query->where('id', $user->id);
+    }
+
+    public function scopeDependingOnRole($query, $user)
+    {
+        if ($user->hasAnyRole(['Detective', 'Security', 'Guard'])) {
+            return $query->withId($user);
+        } elseif ($user->isMainOrganizer()) {
+            $users = $user->users ? explode(',', $user->users) : [];
+            return $query->withId($user)->orWhereIn('id', $users);
+        }
+        return $query;
+    }
+
+    public function scopeMainOrganizerUsers($query, $users)
+    {
+        $users = $users ? explode(',', $users) : [];
+        return $query->whereIn('id', $users);
+    }
+
+    public function owns($related)
+    {
+        return $this->id == $related->user_id;
     }
 }

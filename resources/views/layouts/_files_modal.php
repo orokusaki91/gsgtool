@@ -25,7 +25,7 @@
                         </div>
                     </a>&nbsp;
                     <?php
-                    if(Auth()->user()->isAdmin()) {
+                    if(Auth()->user()->isAdmin() && checkPreviousUri('/home')) {
                         ?>
                         <a id="filesDeleteFile" onclick="return confirm('<?= __('messages.file_delete') ?>')" href="/<?=$request->document_type?>/delete_file/<?=$request->document_id?>/<?=substr($file, strpos($file, $request->document_id . '-') - 5)?>" class="file_del">
                             <img src="<?=asset('images/x.png')?>">
@@ -44,7 +44,7 @@
             $num++;
         }
     }
-    if(Auth()->user()->isAdmin()) {
+    if(auth()->user()->isAdmin() && checkPreviousUri('/home')) {
         ?>
         <form id="filesForm" class="form-horizontal" action="<?=$updateUrl?>" method="post"
               enctype="multipart/form-data">

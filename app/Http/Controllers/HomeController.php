@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use PDO;
+use Auth;
 use App\User;
+use App\News;
+use App\Event;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -17,9 +20,18 @@ class HomeController extends Controller
         ]);
     }
 
-    public function index()
-    {
-        return view('pages.home.index');
+    public function index(){
+        $user = Auth::user();
+        $userRole = $user->role()->id;
+        if ($user->hasRole('Admin')) {
+            $events = Event::where('close', 0)->get();
+        } else {
+            $events = Event::where('close', 0)->whereRaw("find_in_set({$userRole}, users)")->get();
+        }
+
+        $documents = News::where('archived', 0)->orderBy('created_at', 'desc')->take(5)->get();
+
+        return view('pages.home.index', compact('documents', 'user', 'events'));
     }
 
     public function imprint()

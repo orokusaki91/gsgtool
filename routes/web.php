@@ -1,5 +1,4 @@
 <?php
-
 // Login Controller
 
 Route::get('/', 'Auth\LoginController@showLoginForm')->name('login');
@@ -106,39 +105,159 @@ Route::get('/report/delete/{theft_id}', 'TheftController@delete')->name('theft_d
 // Warehouse Controller
 
 Route::get('/warehouse', 'WarehouseController@index')->name('warehouse');
+Route::get('/warehouse/returns', 'WarehouseController@transactions')->name('warehouse_returns');
+Route::get('/warehouse/transactions', 'WarehouseController@transactions')->name('warehouse_transactions');
+Route::get('/warehouse/staff', 'WarehouseController@staff')->name('warehouse_staff');
+Route::get('/warehouse/material', 'WarehouseController@material')->name('warehouse_material');
 
 Route::get('/warehouse/create', 'WarehouseController@create')->name('warehouse_create');
 Route::post('/warehouse/store', 'WarehouseController@store')->name('warehouse_store');
 
-Route::get('/warehouse/edit/{warehouse_id}', 'WarehouseController@edit')->name('warehouse_edit');
-Route::post('/warehouse/update/{warehouse_id}', 'WarehouseController@update')->name('warehouse_update');
+Route::get('/warehouse/input/{warehouse}', 'WarehouseController@getInput')->name('warehouse_input');
+Route::post('/warehouse/input/{warehouse}/update', 'WarehouseController@postInput')->name('warehouse_input_update');
+Route::get('/warehouse/output/{warehouse}', 'WarehouseController@getOutput')->name('warehouse_output');
+Route::post('/warehouse/output/{warehouse}/update', 'WarehouseController@postOutput')->name('warehouse_output_update');
 
-Route::get('/warehouse/delete/{warehouse_id}', 'WarehouseController@delete')->name('warehouse_delete');
+Route::get('/warehouse/edit/{warehouse}', 'WarehouseController@edit')->name('warehouse_edit');
+Route::post('/warehouse/update/{warehouse}', 'WarehouseController@update')->name('warehouse_update');
+
+Route::get('/warehouse/delete/{warehouse}', 'WarehouseController@delete')->name('warehouse_delete');
 
 // Event Controller
 
 Route::get('/event', 'EventController@index')->name('event');
 
-Route::get('/event/create', 'EventController@create')->name('event_create');
-Route::post('/event/store', 'EventController@store')->name('event_store');
+Route::get('/event/create', [
+    'as' => 'event_create',
+    'uses' => 'EventController@create',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::post('/event/store', [
+    'as' => 'event_store',
+    'uses' => 'EventController@store',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
 
-Route::get('/event/old', 'EventController@old')->name('event_old');
+Route::get('/event/old', [
+    'as' => 'event_old',
+    'uses' => 'EventController@old',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
 
-Route::get('/event/archive/{event_id}', 'EventController@archive')->name('event_archive');
-Route::get('/event/un_archive/{event_id}', 'EventController@un_archive')->name('event_un_archive');
-Route::get('/event/archived', 'EventController@archived')->name('event_archived');
+Route::get('/event/archive/{event_id}', [
+    'as' => 'event_archive',
+    'uses' => 'EventController@archive',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/un_archive/{event_id}', [
+    'as' => 'event_un_archive',
+    'uses' => 'EventController@un_archive',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/archived', [
+    'as' => 'event_archived',
+    'uses' => 'EventController@archived',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
 
-Route::get('/event/users/{event_id}', 'EventController@users')->name('event_users');
-Route::get('/event/users/accept/{event_user_id}', 'EventController@user_accept')->name('event_user_accept');
-Route::get('/event/users/reserve/{event_user_id}', 'EventController@user_reserve')->name('event_user_reserve');
-Route::get('/event/users/delete/{event_user_id}', 'EventController@user_delete')->name('event_user_delete');
+Route::get('/event/users/{event_id}', [
+    'as' => 'event_users',
+    'uses' => 'EventController@users',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/{event_id}/users/create', [
+    'as' => 'event_user_create',
+    'uses' => 'EventController@createUser',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/{event_id}/users/{user_id}/store', [
+    'as' => 'event_user_store',
+    'uses' => 'EventController@storeUser',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
 
-Route::get('/event/edit/{event_id}', 'EventController@edit')->name('event_edit');
-Route::post('/event/update/{event_id}', 'EventController@update')->name('event_update');
+Route::post('/event/{event_id}/users/signup', [
+    'as' => 'event_user_signup',
+    'uses' => 'EventController@signUpUser',
+    'middleware' => 'roles',
+    'roles' => ['Main Organizer', 'Security', 'Guard', 'Detective']
+]);
 
-Route::get('/event/close/{event_id}', 'EventController@close')->name('event_close');
+Route::post('/event/{event_id}/users/signout', [
+    'as' => 'event_user_signout',
+    'uses' => 'EventController@signOutUser',
+    'middleware' => 'roles',
+    'roles' => ['Main Organizer', 'Security', 'Guard', 'Detective']
+]);
 
-Route::get('/event/delete/{event_id}', 'EventController@delete')->name('event_delete');
+Route::get('/event/{event_id}/users/accept/{user_id}', [
+    'as' => 'event_user_accept',
+    'uses' => 'EventController@user_accept',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/{event_id}/users/unaccept/{user_id}', [
+    'as' => 'event_user_unaccept',
+    'uses' => 'EventController@user_unaccept',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/{event_id}/users/reserve/{user_id}', [
+    'as' => 'event_user_reserve',
+    'uses' => 'EventController@user_reserve',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::get('/event/{event_id}/users/delete/{user_id}', [
+    'as' => 'event_user_delete',
+    'uses' => 'EventController@user_delete',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::get('/event/edit/{event_id}', [
+    'as' => 'event_edit',
+    'uses' => 'EventController@edit',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+Route::post('/event/update/{event_id}', [
+    'as' => 'event_update',
+    'uses' => 'EventController@update',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::get('/event/close/{event_id}', [
+    'as' => 'event_close',
+    'uses' => 'EventController@close',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+Route::get('/event/delete/{event_id}', [
+    'as' => 'event_delete',
+    'uses' => 'EventController@delete',
+    'middleware' => 'roles',
+    'roles' => ['Admin']
+]);
+
+// Assignment Controller
+Route::get('working_time', 'WorkingTimeController@index')->name('working_time');
+Route::get('working_time/create', 'WorkingTimeController@create')->name('working_time_create');
+Route::post('working_time/store', 'WorkingTimeController@store')->name('working_time_store');
+Route::get('working_time/{workingTime}/edit', 'WorkingTimeController@edit')->name('working_time_edit');
+Route::post('working_time/{workingTime}/update', 'WorkingTimeController@update')->name('working_time_update');
+Route::get('working_time/{workingTime}/delete', 'WorkingTimeController@delete')->name('working_time_delete');
 
 // Document Controller
 

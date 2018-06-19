@@ -8,8 +8,13 @@
         @if(Session::has('error'))
             <div class="alert alert-danger">{{ Session::get('error') }}</div><br>
         @endif
+        <div class="row">
+            <div class="btn-toolbar-right">
+                <a href="{{ route('event_user_create', ['event_id' => $event->id]) }}" class="btn btn-info">{{ __('buttons.add_users') }}</a>
+            </div>
+        </div>
         <h3>{{ __('headings.user_list') }}</h3>
-        <p>{{ __('validation.attributes.description') }}: {{ $user_events[0]->event->description }}</p>
+        <p>{{ __('validation.attributes.description') }}: {{ $event->description }}</p>
         <table id="myTable">
             <thead>
             <tr>
@@ -21,13 +26,13 @@
             </tr>
             </thead>
             <tbody id="report_table">
-            @foreach($user_events as $user_event)
+            @foreach($event->event_users as $user)
                 <tr class="tableCenter">
-                    <td>{{ $user_event->user->firstname. " ". $user_event->user->lastname }}</td>
-                    <td>{{ __('labels.event_status.'. $user_event->status) }}</td>
-                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_accept') }}', '{{ __('buttons.accept')}}', '{{ route('event_user_accept', ['event_user' => $user_event->id]) }}')"><i class="fas fa-check"></i></a></td>
-                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_reserve') }}', '{{ __('buttons.reserve')}}', '{{ route('event_user_reserve', ['event_user' => $user_event->id]) }}')"><i class="far fa-check-square"></i></a></td>
-                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_delete') }}', '{{ __('buttons.delete')}}', '{{ route('event_user_delete', ['event_user' => $user_event->id]) }}')"><i class="fas fa-trash-alt"></i></a></td>
+                    <td>{{ $user->firstname. " ". $user->lastname }}</td>
+                    <td>{{ __('labels.event_status.'. $user->pivot->status) }}</td>
+                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_accept') }}', '{{ __('buttons.accept')}}', '{{ route('event_user_accept', ['event_id' => $event->id, 'user_id' => $user->id]) }}')"><i class="fas fa-check"></i></a></td>
+                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_reserve') }}', '{{ __('buttons.reserve')}}', '{{ route('event_user_reserve', ['event_id' => $event->id, 'user_id' => $user->id]) }}')"><i class="far fa-check-square"></i></a></td>
+                    <td><a href="javascript:void(0)" onclick="confirmationModal('{{ __('messages.event_user_delete') }}', '{{ __('buttons.delete')}}', '{{ route('event_user_delete', ['event_id' => $event->id, 'user_id' => $user->id]) }}')"><i class="fas fa-trash-alt"></i></a></td>
                 </tr>
             @endforeach
             </tbody>

@@ -114,7 +114,9 @@ class ClientController extends Controller
     public function showPdf($client_id){
         $client = User::findOrFail($client_id);
         $html = view('pages.client.show_pdf', compact('client'))->render();
-        return $this->pdf->load($html)->filename($client->name)->show();
+        $options = $this->pdf->getOptions();
+        $options->setIsRemoteEnabled(true);
+        return $this->pdf->setOptions($options)->load($html)->filename($client->name)->show();
     }
 
     public function edit($client_id){

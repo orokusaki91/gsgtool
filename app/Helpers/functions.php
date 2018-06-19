@@ -145,7 +145,7 @@ function getSelectedUsers($request){
     }
     $user_roles = App\Role::all();
     foreach($user_roles as $user_role){
-        $role_name = $user_role->role_name;
+        $role_name = $user_role->label;
         if($request->$role_name){
             $roles = App\UserRole::where('role_id', $user_role->id)->get();
             foreach($roles as $role){
@@ -155,6 +155,7 @@ function getSelectedUsers($request){
             }
         }
     }
+
     return rtrim($users, ',');
 }
 
@@ -165,7 +166,7 @@ function getStringForUploadedDocuments($request, $model, $path){
     }
     foreach($request->documents as $file) {
         $hash = rand(1000, 9999);
-        $route = $file->storeAs($path, $hash. '-'. $model->id . '-' . $file->getClientOriginalName());
+        $route = $file->storeAs($path, $hash. '-'. $model->id . '-' . preg_replace('/\s+/', '_', $file->getClientOriginalName()));
         $string .= 'https://s3.eu-central-1.amazonaws.com/gsgtool/'. $route. '|,|';
     }
     $string = rtrim($string, '|,|');
@@ -279,3 +280,58 @@ function getDocumentType($document_type){
     ];
     return 'App\\'. $classes[$document_type];
 }
+
+
+function getMainOrganizerUsers($user) {
+    return $user->users ? explode(',', $user->users) : [];
+}
+
+function checkPreviousUri($string) {
+    return str_replace(url('/'), '', url()->previous()) != $string;
+}
+
+
+function getStaffPersonalDataColumns() {
+    return ['firstname', 'lastname', 'nickname', 'general'];
+}
+
+function getStaffIDCardColumns() {
+    return ['general', 'service_number', 'birthdate', 'address_1', 'address_2', 'zip_code', 'city', 'country', 'canton', 'official_address', 'post_address'];
+}
+
+function getStaffContactColumns() {
+    return ['phone', 'mobile', 'email'];
+}
+
+function getStaffAdministrativeDataColumns() {
+    return ['ahv', 'apartment', 'marital_status', 'wedding_date', 'nationality', 'work_permit', 'work_permit_date'];
+}
+
+function getStaffBankDataColumns() {
+    return ['acc_type', 'iban', 'number_bank', 'number_post'];
+}
+
+function getStaffSkillsColumns() {
+    return ['current_job', 'spoken_language'];
+}
+
+function getStaffOtherInfo() {
+    return ['auto', 'driving_licence', 'height', 'trousers_size', 't_shirt_size', 'shoe_size'];
+}
+
+function getClientsPersonalDataColumns() {
+    return ['name', 'username', 'address', 'zip_code', 'city'];
+}
+
+function getClientsAddressColumns() {
+    return ['address_1', 'zip_code', 'city'];
+}
+
+function getClientsContactColumns() {
+    return ['phone', 'email', 'contact'];
+}
+
+function getClientsInfoColumns() {
+    return ['info'];
+}
+

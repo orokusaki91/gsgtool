@@ -148,10 +148,20 @@ return[
         '5' => 'xl',
     ],
 
+    'warehouse_type' => ['input', 'output'],
+
     'event_status' => [
         '1' => 'Accepted',
         '2' => 'Reserve',
         '3' => 'On hold',
     ],
-	'main_company' => 'Main company'
+	'main_company' => 'Main company',
+    'pause' => [
+        '1' => 'No Pause',
+        '2' => '15',
+        '3' => '30',
+        '4' => '60',
+        '5' => '90',
+        '6' => '120',
+    ],
 ];
