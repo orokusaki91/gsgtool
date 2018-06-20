@@ -12,11 +12,7 @@
                 break;
             }
         }
-        if($errors->has($field)) {
-            ?>
-            <span style="color:red;"><?=$errors->first($field)?></span>
-            <?php
-        }
         ?>
+        <span style="color:red;" class="form-error"><?=$errors->has($field) ? $errors->first($field) : ''?></span>
     </div>
 </div>

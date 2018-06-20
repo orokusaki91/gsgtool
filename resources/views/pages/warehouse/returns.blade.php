@@ -11,7 +11,7 @@
             <fieldset>
 				{!! getSelectFormGroupDB('select_db', 'staff', $errors, 1, null, $staff, ['firstname', 'lastname'], 0) !!}
 				{!! getSelectFormGroupDB('select_db', 'warehouse_product', $errors, 1, null, [], 'name', 0) !!}
-				{!! getSelectFormGroup('select', 'warehouse_size', $errors, 0, null, []) !!}
+				{!! getSelectFormGroup('select', 'warehouse_size', $errors, 1, null, []) !!}
                 {!! getTextFormGroup('text', 'warehouse_qty', $errors, 1, null, '(max. 0)') !!}
 				{!! getSelectFormGroup('select', 'warehouse_depreciation', $errors, 1, null, getArray('warehouse_depreciation')) !!}
                 <button type="submit" class="submit-btn btn btn-primary">{{ __('buttons.save') }}</button>
@@ -22,14 +22,21 @@
 
 @section('per_page_scripts')
 	<script>
+		var spanEl = $('label[for="warehouse_qty"]').find('span');
+
 		$('#staff').select2().change(function () {
 			$.ajax({
 				url: '{{ route('warehouse_ajax_get_products') }}',
-				data: {staff_id: $(this).val()},
+				data: {staff: $(this).val()},
 				method: 'get',
 				success: function (data) {
+					// reset products and sizes
+					$('#warehouse_product, #warehouse_size').find('option:gt(0)').remove();
+					// set max qty to 0 whenever we choose the staff
+					var text = spanEl.text().replace(new RegExp("\\d+", "g"), 0);
+					spanEl.text(text);
+					// loop throuh products and populate warehouse product select
 					var whProducts = data.whProducts;
-					$('#warehouse_product').find('option:gt(0)').remove();
 					for (i = 0; i < whProducts.length; i++) {
 						var product = whProducts[i];
 						$('<option>', {
@@ -43,18 +50,24 @@
 
 		$('#warehouse_product').select2().change(function () {
 			var staff = $('#staff').val();
+			var size = $('#warehouse_size').val();
 			$.ajax({
 				url: '{{ route('warehouse_ajax_get_sizes') }}',
-				data: {warehouse_id: $(this).val(), staff_id: staff},
+				data: {warehouse_product: $(this).val(), staff: staff, warehouse_size: size},
 				method: 'get',
 				success: function (data) {
 					$('#warehouse_size').find('option:gt(0)').remove();
+
+					// set new max qty to the product without size
+					var text = spanEl.text().replace(new RegExp("\\d+", "g"), data.sumQty);
+					spanEl.text(text);
+
 					var whSizes = data.whSizes;
-
-					var el = $('label[for="warehouse_qty"]').find('span');
-					var text = el.text().replace(new RegExp("\\d+", "g"), data.sumQty);
-					el.text(text);
-
+					// show or hide sizes depending on if there are any sizes or not
+					Array.isArray(whSizes) ? 
+								$('#warehouse_size').closest('.form-group').hide() : 
+								$('#warehouse_size').closest('.form-group').show();
+					// loop throuh sizes and populate warehouse sizes select
 					for (var key in whSizes) {
 						$('<option>', {
 							value: key,
@@ -67,16 +80,39 @@
 
 		$('#warehouse_size').select2().change(function () {
 			var warehouse = $('#warehouse_product').val();
+			var staff = $('#staff').val();
 			$.ajax({
 				url: '{{ route('warehouse_ajax_get_qty') }}',
-				data: {size_id: $(this).val(), warehouse_id: warehouse},
+				data: {staff: staff, warehouse_size: $(this).val(), warehouse_product: warehouse},
 				method: 'get',
 				success: function (data) {
-					var el = $('label[for="warehouse_qty"]').find('span');
-					var text = el.text().replace(new RegExp("\\d+", "g"), data.sum);
-					el.text(text);
+					// set new max qty to product with the selected size
+					var text = spanEl.text().replace(new RegExp("\\d+", "g"), data.sumQty);
+					spanEl.text(text);
 				}
 			});
+		});
+
+		$('form').on('click', 'button', function (e) {
+			var formData = $('form').serialize();
+	        e.preventDefault();
+            $('span.error').text('');
+	        $.ajax({
+	            type: 'POST',
+	            url: '{{ route('warehouse_returns_store') }}',
+	            dataType: 'json',
+	            data: formData, 
+	        	success: function(data){
+	                console.log(data);
+	            },
+	            error: function (data) {
+	            	console.log(data.responseJSON.errors);
+	            	$.each(data.responseJSON.errors, function (key, val) {
+                        var input = $('form').find('[name="'+ key +'"]');
+                        input.closest('div').children('span:last-child').text(val);
+                    });
+		        }
+	        });
 		});
 	</script>
 @stop

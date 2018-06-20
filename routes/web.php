@@ -105,8 +105,8 @@ Route::get('/report/delete/{theft_id}', 'TheftController@delete')->name('theft_d
 // Warehouse Controller
 
 Route::get('/warehouse', 'WarehouseController@index')->name('warehouse');
-Route::get('/warehouse/returns', 'WarehouseController@returns')->name('warehouse_returns');
-Route::post('/warehouse/returns/store', 'WarehouseController@storeReturns')->name('warehouse_returns_store');
+Route::get('/warehouse/returns', 'WarehouseController@getReturns')->name('warehouse_returns');
+Route::post('/warehouse/returns/store', 'WarehouseController@postReturns')->name('warehouse_returns_store');
 Route::get('/warehouse/transactions', 'WarehouseController@transactions')->name('warehouse_transactions');
 Route::get('/warehouse/staff', 'WarehouseController@staff')->name('warehouse_staff');
 Route::get('/warehouse/material', 'WarehouseController@material')->name('warehouse_material');

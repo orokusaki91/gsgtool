@@ -3,8 +3,7 @@
     <label class="col-md-4 control-label text-left" for="<?=$field?>"><?=__('validation.attributes.'. $field). $requiredIcon?></label>
     <div class="col-md-6">
         <select id="<?=$field?>" name="<?=$field. $multiple?>" class="form-control" <?=$multipleAttr?>>
-                <option value="0"><?=__('global.choose')?></option>';
-            
+            <option value="0"><?=__('global.choose')?></option>';
             <?php
             // if(!$required && !$multiple){
             // }
@@ -30,12 +29,6 @@
             }
             ?>
         </select>
-        <?php
-        if($errors->has($field)) {
-            ?>
-            <span style="color:red;"><?=$errors->first($field)?></span>
-            <?php
-        }
-        ?>
+        <span style="color:red;" class="form-error"><?=$errors->has($field) ? $errors->first($field) : ''?></span>
     </div>
 </div>

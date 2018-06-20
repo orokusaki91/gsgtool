@@ -25,7 +25,7 @@
 		$('#warehouse_size').select2().change(function () {
 			$.ajax({
 				url: '{{ route('warehouse_ajax_sum_qty') }}',
-				data: {size_id: $(this).val(), warehouse_id: '{{ $warehouse->id }}'},
+				data: {warehouse_size: $(this).val(), warehouse_product: '{{ $warehouse->id }}'},
 				method: 'get',
 				success: function (data) {
 					var el = $('label[for="warehouse_qty"]').find('span');

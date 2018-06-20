@@ -6,12 +6,6 @@
         <span class="input-group-addon">
             <span class="add-on"><i class="far fa-calendar-alt"></i></span>
         </span>
-        <?php
-        if($errors->has($field)) {
-            ?>
-            <span style="color:red;"><?=$errors->first($field)?></span>
-            <?php
-        }
-        ?>
+        <span style="color:red;" class="form-error"><?=$errors->has($field) ? $errors->first($field) : ''?></span>
     </div>
 </div>
