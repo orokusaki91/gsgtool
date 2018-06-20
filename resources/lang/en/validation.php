@@ -189,5 +189,10 @@ return [
 		'goods' => 'Goods',
 		'price' => 'Price',
 		'damaged' => 'Damaged',
+		'number' => 'Number',
+		'reserve' => 'Reserve',
+		'quantity' => 'Quantity',
+		'numer' => 'Numer',
+		'pause' => 'Pause',
 	]
 ];

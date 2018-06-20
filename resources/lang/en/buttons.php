@@ -26,5 +26,10 @@ return [
 	'delete' => 'Delete',
 	'un_archive' => 'Un archive',
 	'reject' => 'Reject',
-	'approve' => 'Approve'
+	'approve' => 'Approve',
+	'old' => 'Old',
+	'returns' => 'Returns',
+	'input_output' => 'Input/Output',
+	'staff' => 'Staff',
+	'material' => 'Material',
 ];

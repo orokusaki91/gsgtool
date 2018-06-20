@@ -46,4 +46,6 @@ return [
 	'report_edit' => 'Report edit',
 	'theft_list' => 'Theif list',
 	'theft_edit' => 'Theif edit',
+	'event_list' => 'Event list',
+	'warehouse_list' => 'Warehouse list'
 ];

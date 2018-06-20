@@ -35,6 +35,9 @@ return [
 		'report' => 'Report',
 		'vacation' => 'Vacation',
 		'theft' => 'Theft',
+		'event' => 'Event',
+		'warehouse' => 'Warehouse',
+		'working_time' => 'Working time'
 	],
     'imprint' => 'Imprint',
 	'documents' => 'Documents',
@@ -50,4 +53,9 @@ return [
 	'reject' => 'Reject',
 	"message" => 'Message',
 	"signature" => 'Signature',
+	"users" => 'Users',
+	"close" => 'Close',
+	"input" => 'Input',
+	"output" => 'Output',
+	'comment' => 'Comment',
 ];
