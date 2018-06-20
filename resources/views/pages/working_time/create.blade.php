@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h3>{{ __('headings.event_create') }}</h3><br>
+        <h3>{{ __('headings.working_time_create') }}</h3>
         <form class="form-horizontal" action="{{ route('working_time_store') }}" method="post">
             {{ csrf_field() }}
             <fieldset>

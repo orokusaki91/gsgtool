@@ -4,7 +4,7 @@
 
     <div class="container main">
         @if(Session::has('success'))
-            <div class="alert alert-success">{{ Session::get('success') }}</div><br>
+            <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
         <div class="row">
             <div class="btn-toolbar-right">

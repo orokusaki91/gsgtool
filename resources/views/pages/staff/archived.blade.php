@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         @if(Session::has('success'))
-            <div class="alert alert-success">{{ Session::get('success') }}</div><br>
+            <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
         <h3>{{ __('headings.archived_staff_list') }}</h3>
         <table id="myTable">

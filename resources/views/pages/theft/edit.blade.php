@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h3>{{ __('headings.theft_edit') }}</h3><br>
+        <h3>{{ __('headings.theft_edit') }}</h3>
         <form class="form-horizontal" action="{{ route('theft_update', ['theft_id' => $theft->id]) }}" method="post" enctype="multipart/form-data">
             @if(Session::has('success'))
                 <div class="alert alert-success">{{ Session::get('success') }}</div>

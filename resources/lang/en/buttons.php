@@ -31,5 +31,8 @@ return [
 	'returns' => 'Returns',
 	'input_output' => 'Input/Output',
 	'staff' => 'Staff',
-	'material' => 'Material'
+	'material' => 'Material',
+	'add_users' => 'Add users',
+	'archived' => 'Archived',
+	'accept' => 'Accept',
 ];
