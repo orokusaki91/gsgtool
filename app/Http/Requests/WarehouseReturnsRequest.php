@@ -27,7 +27,7 @@ class WarehouseReturnsRequest extends FormRequest
         $rules = [
             'warehouse_product' => 'required|not_in:0',
             'staff' => 'required|not_in:0',
-            'warehouse_depreciation' => 'required',
+            'warehouse_depreciation' => 'required|not_in:0',
             'warehouse_qty' => 'required',
         ];
         $whSizeRule = ['warehouse_size' => 'required|not_in:0'];

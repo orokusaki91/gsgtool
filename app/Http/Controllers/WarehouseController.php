@@ -132,7 +132,29 @@ class WarehouseController extends Controller
 
     public function postReturns(WarehouseReturnsRequest $request)
     {
-        $whTransaction = WarehouseTransaction::where();
+        $inputQty = $request->warehouse_qty;
+        $user = User::findOrFail($request->staff);
+        $warehouse = Warehouse::findOrFail($request->warehouse_product);
+        $sumQty = WarehouseTransaction::sumQuantities($request);
+
+        if ($inputQty > $sumQty) {
+            Session::flash('error', 'Quantity not allowed.');
+            return response()->json(['status' => false]);
+        }
+
+        $newWhTransaction = new WarehouseTransaction;
+        $newWhTransaction->user_id = $user->id;
+        $newWhTransaction->warehouse_size = $request->warehouse_size;
+        $newWhTransaction->user_id = $request->staff;
+        $newWhTransaction->warehouse_qty = $inputQty;
+        $newWhTransaction->depreciation = $request->warehouse_depreciation;
+        
+        $warehouse->transactions()->save($newWhTransaction);
+
+        if ($request->warehouse_depreciation == 1) {
+            $warehouse->wh_stock = $warehouse->wh_stock + $inputQty;
+            $warehouse->save();
+        }
 
         Session::flash('success', 'Success');
 
@@ -176,12 +198,12 @@ class WarehouseController extends Controller
         if (!$whSizes->count()) {
             $sumQty = WarehouseTransaction::where('warehouse_id', $request->warehouse_product)
                                             ->where('user_id', $request->staff)
-                                            ->sum(DB::raw('abs(warehouse_qty)'));
+                                            ->sum('warehouse_qty');
         }
 
         return response()->json([
             'whSizes' => $whSizes,
-            'sumQty' => $sumQty
+            'sumQty' => abs($sumQty)
         ]);
     }
 
@@ -190,10 +212,10 @@ class WarehouseController extends Controller
         $sumQty = WarehouseTransaction::where('warehouse_id', $request->warehouse_product)
                                     ->where('user_id', $request->staff)
                                     ->where('warehouse_size', $request->warehouse_size)
-                                            ->sum(DB::raw('abs(warehouse_qty)'));
+                                            ->sum('warehouse_qty');
 
         return response()->json([
-            'sumQty' => $sumQty
+            'sumQty' => abs($sumQty)
         ]);
     }
 

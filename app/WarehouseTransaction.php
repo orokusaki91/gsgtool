@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class WarehouseTransaction extends Model
@@ -26,5 +27,16 @@ class WarehouseTransaction extends Model
                     ->pluck('warehouse_size')
                     ->filter(function ($value) { return $value != null; })
                     ->toArray();
+    }
+
+    public static function sumQuantities($request) {
+        $query = self::where('warehouse_id', $request->warehouse_product)
+                    ->where('user_id', $request->staff);
+
+        $query = $request->warehouse_size ? $query->where('warehouse_size', $request->warehouse_size) : $query;
+
+        $sum = $query->sum('warehouse_qty');
+
+        return abs($sum);
     }
 }
