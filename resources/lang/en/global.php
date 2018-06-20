@@ -57,5 +57,5 @@ return [
 	"close" => 'Close',
 	"input" => 'Input',
 	"output" => 'Output',
-	'comment' => 'Comment',
+	'comment' => 'Comment'
 ];

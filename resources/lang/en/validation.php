@@ -193,6 +193,6 @@ return [
 		'reserve' => 'Reserve',
 		'quantity' => 'Quantity',
 		'numer' => 'Numer',
-		'pause' => 'Pause',
+		'pause' => 'Pause'
 	]
 ];
