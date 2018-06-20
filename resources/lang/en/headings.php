@@ -47,5 +47,15 @@ return [
 	'theft_list' => 'Theif list',
 	'theft_edit' => 'Theif edit',
 	'event_list' => 'Event list',
-	'warehouse_list' => 'Warehouse list'
+	'warehouse_list' => 'Warehouse list',
+	'warehouse_create' => 'Warehouse create',
+	'warehouse_edit' => 'Warehouse edit',
+	'working_time_list' => 'Working time list',
+	'working_time_create' => 'Add working time',
+	'working_time_edit' => 'Edit working time',
+	'event_edit' => 'Event time',
+	'event_create' => 'Event create',
+	'event_old' => 'Event old',
+	'event_archived' => 'Event archived',
+	'user_list' => 'User list',
 ];

@@ -289,6 +289,10 @@ a:hover {
 
 /* users - list - tabela sa listom korisnika */
 
+#eventsTable_wrapper {
+	margin-bottom: 100px;
+}
+
 .dtatatable {
 	width: 100%;
 }

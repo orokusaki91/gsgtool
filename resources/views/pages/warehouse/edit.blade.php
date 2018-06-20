@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <h3>{{ __('headings.warehouse_edit') }}</h3><br>
+        <h3>{{ __('headings.warehouse_edit') }}</h3>
         <form class="form-horizontal" action="{{ route('warehouse_update', ['warehouse_id' => $warehouse->id]) }}" method="post" enctype="multipart/form-data">
             @if(Session::has('success'))
                 <div class="alert alert-success">{{ Session::get('success') }}</div>

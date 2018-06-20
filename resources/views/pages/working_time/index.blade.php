@@ -3,17 +3,17 @@
 @section('content')
     <div class="container main">
         @if(Session::has('success'))
-            <div class="alert alert-success">{{ Session::get('success') }}</div><br>
+            <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
         @if(Session::has('error'))
-            <div class="alert alert-danger">{{ Session::get('error') }}</div><br>
+            <div class="alert alert-danger">{{ Session::get('error') }}</div>
         @endif
         <div class="row">
             <div class="btn-toolbar-right">
                 <a href="{{ route('working_time_create') }}" class="btn btn-info">{{ __('buttons.create') }}</a>
             </div>
         </div>
-        <h3>{{ __('headings.event_list') }}</h3>
+        <h3>{{ __('headings.working_time_list') }}</h3>
         <table id="myTable">
             <thead>
             <tr>

@@ -3,9 +3,9 @@
 @section('content')
     <div class="container">
     	@if(Session::has('error'))
-            <div class="alert alert-danger">{{ Session::get('error') }}</div><br>
+            <div class="alert alert-danger">{{ Session::get('error') }}</div>
         @endif
-        <h3>{{ __('headings.warehouse_create') }}</h3><br>
+        <h3>{{ __('headings.warehouse_create') }}</h3>
         <form class="form-horizontal" action="{{ route('warehouse_output_update', ['warehouse' => $warehouse->id]) }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <fieldset>

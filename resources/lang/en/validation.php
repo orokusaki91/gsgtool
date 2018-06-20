@@ -193,6 +193,11 @@ return [
 		'reserve' => 'Reserve',
 		'quantity' => 'Quantity',
 		'numer' => 'Numer',
-		'pause' => 'Pause'
+		'pause' => 'Pause',
+		'sizes' => 'Sizes',
+		'check_in' => 'Check in',
+		'check_out' => 'Check out',
+		'comment' => 'Comment',
+		'warehouse_qty' => 'Warehouse quantity',
 	]
 ];

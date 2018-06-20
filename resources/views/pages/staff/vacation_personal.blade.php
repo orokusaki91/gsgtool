@@ -7,7 +7,7 @@
         @endif
         <div class="row">
             <div class="btn-toolbar">
-                <a href="{{ route('staff_vacation_create') }}" class="btn btn-info">{{ __('buttons.create_vacation') }}</a><br><br>
+                <a href="{{ route('staff_vacation_create') }}" class="btn btn-info">{{ __('buttons.create_vacation') }}</a>
             </div>
         </div>
         <h3>{{ __('headings.vacation_list') }}</h3>
