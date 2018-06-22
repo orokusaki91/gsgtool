@@ -14,7 +14,7 @@
                 <?php
             }
             ?>
-            <div class="col-xs-6 col-md-3">
+            <div class="col-xs-6">
                 <div class='file_main'>
                     <a style="display:inline-table;" href="<?=$file?>" target="_blank">
                         <img class='file' src="<?= asset('images/file.png') ?>" />
