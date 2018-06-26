@@ -21,3 +21,9 @@ function confirmationModal(message, button, url) {
 		window.location = url;
 	};
 }
+
+function toDate(dateStr) {
+ 	var date = dateStr.split("-");
+ 	return new Date(date[2], date[1] - 1, date[0]);
+}
+

@@ -13,8 +13,8 @@
                 <a href="{{ route('warehouse_create') }}" class="btn btn-info">{{ __('buttons.create') }}</a>
                 <a href="{{ route('warehouse_returns') }}" class="btn btn-info">{{ __('buttons.returns') }}</a>
                 <a href="{{ route('warehouse_transactions') }}" class="btn btn-info">{{ __('buttons.input_output') }}</a>
-                <a href="{{ route('warehouse_staff') }}" class="btn btn-info">{{ __('buttons.staff') }}</a>
-                <a href="{{ route('warehouse_material') }}" class="btn btn-info">{{ __('buttons.material') }}</a>
+                <a href="{{ route('warehouse_staff_transactions') }}" class="btn btn-info">{{ __('buttons.staff') }}</a>
+                <a href="{{ route('warehouse_products_transactions') }}" class="btn btn-info">{{ __('buttons.material') }}</a>
             </div>
         </div>
         <h3>{{ __('headings.warehouse_list') }}</h3>
@@ -43,6 +43,14 @@
             </tbody>
         </table>
     </div>
-    <div id="filesModal" class="confirmation-modal" style="display: none"></div>
     @include('layouts._confirmation_modal')
 @endsection
+
+@section('per_page_scripts')
+    <script>
+    $('#myTable tbody').on('click', 'td.details-control', function () {
+        var subTable = $(this).closest('tr').next('.sub-table');
+        subTable.toggle();
+    });
+    </script>
+@stop

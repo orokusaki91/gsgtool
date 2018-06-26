@@ -107,9 +107,10 @@ Route::get('/report/delete/{theft_id}', 'TheftController@delete')->name('theft_d
 Route::get('/warehouse', 'WarehouseController@index')->name('warehouse');
 Route::get('/warehouse/returns', 'WarehouseController@getReturns')->name('warehouse_returns');
 Route::post('/warehouse/returns/store', 'WarehouseController@postReturns')->name('warehouse_returns_store');
-Route::get('/warehouse/transactions', 'WarehouseController@transactions')->name('warehouse_transactions');
-Route::get('/warehouse/staff', 'WarehouseController@staff')->name('warehouse_staff');
-Route::get('/warehouse/material', 'WarehouseController@material')->name('warehouse_material');
+Route::get('/warehouse/transactions', 'WarehouseController@getTransactions')->name('warehouse_transactions');
+Route::get('/warehouse/transactions/delete/{warehouseTransaction}', 'WarehouseController@deleteTransaction')->name('warehouse_transactions_delete');
+Route::get('/warehouse/staff_transactions', 'WarehouseController@getStaffTranscations')->name('warehouse_staff_transactions');
+Route::get('/warehouse/products_transactions', 'WarehouseController@getProductsTranscations')->name('warehouse_products_transactions');
 
 Route::get('/warehouse/create', 'WarehouseController@create')->name('warehouse_create');
 Route::post('/warehouse/store', 'WarehouseController@store')->name('warehouse_store');

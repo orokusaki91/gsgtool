@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\WarehouseRequest;
-use Illuminate\Http\Request;
 use DB;
 use Session;
 use App\User;
 use App\Warehouse;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use App\WarehouseTransaction;
+use App\Http\Requests\WarehouseRequest;
 use App\Http\Requests\WarehouseReturnsRequest;
 
 class WarehouseController extends Controller
@@ -56,7 +57,7 @@ class WarehouseController extends Controller
 
     public function postInput(Warehouse $warehouse, Request $request){
         $this->validate($request, [
-            'warehouse_qty' => 'required|integer',
+            'warehouse_qty' => 'required|integer|min:1',
             'warehouse_size' => 'integer|nullable'
         ]);
 
@@ -89,11 +90,21 @@ class WarehouseController extends Controller
         return view('pages.warehouse.output_edit', compact('warehouse', 'staff', 'whSizes', 'sumQty'));
     }
 
-    public function postOutput(Warehouse $warehouse, Request $request){
-        $this->validate($request, [
-            'warehouse_qty' => 'required|integer',
-        ]);
-        $inputWhSize = isset($request->warehouse_size) ? $request->warehouse_size : 0;
+    public function postOutput(Warehouse $warehouse, Request $request) {
+        if ($warehouse->has_sizes) {
+            $this->validate($request, [
+                'user_id' => 'required|not_in:0',
+                'warehouse_size' => 'required|not_in:0',
+                'warehouse_qty' => 'required|integer|min:1',
+            ]);
+        } else {
+            $this->validate($request, [
+                'user_id' => 'required|not_in:0',
+                'warehouse_qty' => 'required|integer|min:1',
+            ]);
+        }
+
+        $inputWhSize = isset($request->warehouse_size) ? $request->warehouse_size : NULL;
 
         if ($inputWhSize) {
             $sumQty = $warehouse->transactions()->where('warehouse_size', $inputWhSize)->sum('warehouse_qty');
@@ -110,8 +121,8 @@ class WarehouseController extends Controller
         $whTransaction = new WarehouseTransaction;
         $whTransaction->user_id = $request->user_id;
         $whTransaction->warehouse_qty = (int)-$request->warehouse_qty;
-        $whTransaction->warehouse_size = $request->warehouse_size;
-        $whTransaction->warehouse_type = 1;
+        $whTransaction->warehouse_size = $inputWhSize;
+        $whTransaction->warehouse_type = 2;
         $warehouse->transactions()->save($whTransaction);
 
         $warehouse->wh_stock = $warehouse->wh_stock - $request->warehouse_qty;
@@ -137,15 +148,16 @@ class WarehouseController extends Controller
         $warehouse = Warehouse::findOrFail($request->warehouse_product);
         $sumQty = WarehouseTransaction::sumQuantities($request);
 
-        if ($inputQty > $sumQty) {
+        if ($inputQty > abs($sumQty)) {
             Session::flash('error', 'Quantity not allowed.');
             return response()->json(['status' => false]);
         }
 
         $newWhTransaction = new WarehouseTransaction;
         $newWhTransaction->user_id = $user->id;
-        $newWhTransaction->warehouse_size = $request->warehouse_size;
+        $newWhTransaction->warehouse_size = $request->warehouse_size > 0 ? $request->warehouse_size : NULL;
         $newWhTransaction->user_id = $request->staff;
+        $newWhTransaction->warehouse_type = 3;
         $newWhTransaction->warehouse_qty = $inputQty;
         $newWhTransaction->depreciation = $request->warehouse_depreciation;
         
@@ -163,13 +175,61 @@ class WarehouseController extends Controller
         ]);
     }
 
+    public function getTransactions()
+    {
+        $whTransactions = WarehouseTransaction::with('user')
+                                                    ->whereDate('created_at', '>', Carbon::now()->subMonth())
+                                                    ->latest()
+                                                    ->get();
+        return view('pages.warehouse.transactions', compact('whTransactions'));
+    }
+
+    public function getStaffTranscations(Request $request)
+    {
+        $staff_id = $request->staff_id;
+        $whProducts = !$staff_id ? collect([]) : Warehouse::with('transactions')
+                                                        ->whereHas('transactions', function ($q) use ($staff_id) {
+                                                            $q->where('user_id', $staff_id);
+                                                        })->get();
+        $staff = User::with('transactions')->get();
+        return view('pages.warehouse.staff_transactions', compact('staff', 'whProducts', 'staff_id'));
+    }
+
+    public function getProductsTranscations(Request $request)
+    {
+        $product_id = $request->product_id;
+        $whProducts = Warehouse::all();
+        $whProduct = $product_id ? Warehouse::findOrFail($product_id) : NULL;
+
+        if ($whProduct) {
+            if ($whProduct->has_sizes) {
+                $whTransactions = WarehouseTransaction::with('user')
+                                                    ->where('warehouse_id', $whProduct->id)
+                                                    ->whereNotNull('warehouse_size')
+                                                    ->groupBy('warehouse_size', 'user_id')
+                                                    ->get();
+            } else {
+                $whTransactions = WarehouseTransaction::with('user')
+                                                    ->where('warehouse_id', $whProduct->id)
+                                                    ->whereNull('warehouse_size')
+                                                    ->groupBy('user_id')
+                                                    ->get();
+            }
+        } else {
+            $whTransactions = collect([]);
+        }
+
+
+        return view('pages.warehouse.products_transactions', compact('whProducts', 'whProduct', 'whTransactions'));
+    }
+
     // AJAX REQUESTS START HERE
     public function sumQuantities(Request $request)
     {
         $sumQty = WarehouseTransaction::where('warehouse_id', $request->warehouse_product)
                                         ->where('warehouse_size', $request->warehouse_size)
                                         ->sum('warehouse_qty');
-        return response()->json(['sum' => $sumQty]);
+        return response()->json(['sum' => abs($sumQty)]);
     }
 
     public function getProductsByStaff(Request $request)

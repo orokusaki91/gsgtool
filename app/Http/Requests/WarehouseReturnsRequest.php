@@ -27,8 +27,8 @@ class WarehouseReturnsRequest extends FormRequest
         $rules = [
             'warehouse_product' => 'required|not_in:0',
             'staff' => 'required|not_in:0',
-            'warehouse_depreciation' => 'required|not_in:0',
-            'warehouse_qty' => 'required',
+            'warehouse_depreciation' => 'required|integer|between:1,2',
+            'warehouse_qty' => 'required|integer|min:1',
         ];
         $whSizeRule = ['warehouse_size' => 'required|not_in:0'];
         $sizes = WarehouseTransaction::getSizesByProduct(request());

@@ -148,7 +148,11 @@ return[
         '5' => 'xl',
     ],
 
-    'warehouse_type' => ['Input', 'Output'],
+    'warehouse_type' => [
+        '1' => 'Input',
+        '2' => 'Output',
+        '3' => 'Return',
+    ],
     'warehouse_depreciation' => [
         '1' => 'Return to Warehouse',
         '2' => 'Depreciated', 

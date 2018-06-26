@@ -117,7 +117,7 @@ class User extends Authenticatable
     }
 
     public function transactions(){
-        return $this->hasMany(Warehouse::class);
+        return $this->hasMany(WarehouseTransaction::class);
     }
 
     public function mainCompany(){

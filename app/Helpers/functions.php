@@ -335,4 +335,3 @@ function getClientsContactColumns() {
 function getClientsInfoColumns() {
     return ['info'];
 }
-
