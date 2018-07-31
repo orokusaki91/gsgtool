@@ -20,3 +20,6 @@ Homestead.json
 .rocketeer/
 *.example
 composer.lock
+.DS_Store
+composer.json
+composer.lock
